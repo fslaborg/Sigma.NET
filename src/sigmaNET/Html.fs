@@ -36,7 +36,8 @@ type HTML =
     static member Doc(
         graphHTML: XmlNode list, 
         sigmaReference: JSlibReference, 
-        graphologyReference: JSlibReference, 
+        graphologyReference: JSlibReference,
+        graphologyLibraryReference : JSlibReference,
         ?AdditionalHeadTags
     ) =
         let additionalHeadTags =
@@ -52,6 +53,17 @@ type HTML =
                         rawText (InternalUtils.getFullGraphologyJS ())
                     ]
             | NoReference -> rawText ""
+            //| Require _ -> rawText ""
+
+        let graphologyLibraryScriptRef =
+            match graphologyLibraryReference with
+            | Full ->
+                script
+                    [ _type "text/javascript" ]
+                    [
+                        rawText (InternalUtils.getFullGraphologyLibraryJS ())
+                    ]
+            | _ -> rawText ""
             //| Require _ -> rawText ""
 
         let sigmaScriptRef =
@@ -73,6 +85,7 @@ type HTML =
                     []
                     [
                         graphologyScriptRef
+                        graphologyLibraryScriptRef
                         sigmaScriptRef
                         yield! additionalHeadTags
                     ]
@@ -150,10 +163,12 @@ type HTML =
             let displayOptions = defaultArg DisplayOpts Defaults.DefaultDisplayOptions
             let sigmaReference = DisplayOptions.getSigmaReference displayOptions
             let graphologyReference = DisplayOptions.getGraphologyReference displayOptions
+            let graphologyLibraryReference = DisplayOptions.getGraphologyLibraryReference displayOptions
             HTML.Doc(
                 graphHTML = (HTML.toGraphHTMLNodes(DisplayOpts = displayOptions) graphData),
                 sigmaReference = sigmaReference,
-                graphologyReference = graphologyReference
+                graphologyReference = graphologyReference,
+                graphologyLibraryReference = graphologyLibraryReference
             )
             |> RenderView.AsString.htmlDocument
 

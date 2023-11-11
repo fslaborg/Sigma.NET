@@ -32,14 +32,16 @@ type DisplayOptions() =
             [<Optional; DefaultParameterValue(null)>] ?AdditionalHeadTags: XmlNode list,
             [<Optional; DefaultParameterValue(null)>] ?Description: XmlNode list,
             [<Optional; DefaultParameterValue(null)>] ?SigmaJSReference: JSlibReference,
-            [<Optional; DefaultParameterValue(null)>] ?GraphologyJSReference: JSlibReference
+            [<Optional; DefaultParameterValue(null)>] ?GraphologyJSReference: JSlibReference,
+            [<Optional; DefaultParameterValue(null)>] ?GraphologyLibraryJSReference: JSlibReference
         ) =
         DisplayOptions()
         |> DisplayOptions.style (
             ?AdditionalHeadTags = AdditionalHeadTags,
             ?Description = Description,
             ?SigmaJSReference = SigmaJSReference,
-            ?GraphologyJSReference = GraphologyJSReference
+            ?GraphologyJSReference = GraphologyJSReference,
+            ?GraphologyLibraryJSReference = GraphologyLibraryJSReference
         )
 
     /// <summary>
@@ -53,7 +55,8 @@ type DisplayOptions() =
             [<Optional; DefaultParameterValue(null)>] ?AdditionalHeadTags: XmlNode list,
             [<Optional; DefaultParameterValue(null)>] ?Description: XmlNode list,
             [<Optional; DefaultParameterValue(null)>] ?SigmaJSReference: JSlibReference,
-            [<Optional; DefaultParameterValue(null)>] ?GraphologyJSReference: JSlibReference
+            [<Optional; DefaultParameterValue(null)>] ?GraphologyJSReference: JSlibReference,
+            [<Optional; DefaultParameterValue(null)>] ?GraphologyLibraryJSReference: JSlibReference
         ) =
         (fun (displayOpts: DisplayOptions) ->
 
@@ -61,6 +64,7 @@ type DisplayOptions() =
             Description |> DynObj.setValueOpt displayOpts "Description"
             SigmaJSReference |> DynObj.setValueOpt displayOpts "SigmaJSReference"
             GraphologyJSReference |> DynObj.setValueOpt displayOpts "GraphologyJSReference"
+            GraphologyLibraryJSReference |> DynObj.setValueOpt displayOpts "GraphologyLibraryJSReference"
 
             displayOpts)
 
@@ -71,7 +75,9 @@ type DisplayOptions() =
         DisplayOptions()
         |> DisplayOptions.style (
             SigmaJSReference      = CDN $"https://cdnjs.cloudflare.com/ajax/libs/sigma.js/{Globals.SIGMAJS_VERSION}/sigma.min.js",
-            GraphologyJSReference = CDN $"https://cdnjs.cloudflare.com/ajax/libs/graphology/{Globals.GRAPHOLOGY_VERSION}/graphology.umd.min.js"
+            GraphologyJSReference = CDN $"https://cdnjs.cloudflare.com/ajax/libs/graphology/{Globals.GRAPHOLOGY_VERSION}/graphology.umd.min.js",
+            GraphologyLibraryJSReference = Full
+            
         )
 
     /// <summary>
@@ -81,6 +87,7 @@ type DisplayOptions() =
         DisplayOptions.init (
             SigmaJSReference = CDN $"https://cdnjs.cloudflare.com/ajax/libs/sigma.js/{Globals.SIGMAJS_VERSION}/sigma.min.js",
             GraphologyJSReference = CDN $"https://cdnjs.cloudflare.com/ajax/libs/graphology/{Globals.GRAPHOLOGY_VERSION}/graphology.umd.min.js",
+            GraphologyLibraryJSReference = Full,
             AdditionalHeadTags =
                 [
                     title [] [ str "sigmaNET Datavisualization" ]
@@ -157,3 +164,16 @@ type DisplayOptions() =
 
     static member getGraphologyReference(displayOpts: DisplayOptions) =
         displayOpts |> DisplayOptions.tryGetGraphologyReference |> Option.defaultValue (JSlibReference.NoReference)
+
+    //
+    static member setGraphologyLibraryReference(graphologyLibraryJSReference: JSlibReference) =
+        (fun (displayOpts: DisplayOptions) ->
+            graphologyLibraryJSReference |> DynObj.setValue displayOpts "GraphologyLibraryJSReference"
+            displayOpts)
+
+    static member tryGetGraphologyLibraryReference(displayOpts: DisplayOptions) =
+        displayOpts.TryGetTypedValue<JSlibReference>("GraphologyLibraryJSReference")
+
+    static member getGraphologyLibraryReference(displayOpts: DisplayOptions) =
+        displayOpts |> DisplayOptions.tryGetGraphologyLibraryReference |> Option.defaultValue (JSlibReference.NoReference)
+

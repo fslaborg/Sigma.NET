@@ -27,7 +27,7 @@ let _ = graphData.addEdge(edge1)
 
 Graph.empty()
 |> Graph.withNodes [ 
-        
+        //node "Thomas" 
         Node.Init("Thomas",X = 0, Y = 10, Size = 10, Label = "A" )
         Node.Init("Eric",X = 10, Y = 0, Size = 50, Label = "B" )
     ]
@@ -35,5 +35,5 @@ Graph.empty()
 |> Graph.show()
 
 
-
+InternalUtils.getFullGraphologyLibraryJS()
 
