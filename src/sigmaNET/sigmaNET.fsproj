@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="graphology.umd.min.js" />
+    <EmbeddedResource Include="sigma.min.js" />
+    <Compile Include="InternalUtils.fs" />
+    <Compile Include="Layout.fs" />
+    <Compile Include="Renderer.fs" />
+    <Compile Include="GraphData.fs" />
+    <Compile Include="JsonConverter.fs" />
+    <Compile Include="Globals.fs" />
+    <Compile Include="DisplayOptions.fs" />
+    <Compile Include="Defaults.fs" />
+    <Compile Include="Html.fs" />
+    <Compile Include="Sigma.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DynamicObj" Version="2.0.0" />
+    <PackageReference Include="Giraffe.ViewEngine" Version="1.4.0" />
+  </ItemGroup>
+
+</Project>
