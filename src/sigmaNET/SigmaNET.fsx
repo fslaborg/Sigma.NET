@@ -23,7 +23,17 @@ let _ = graphData.addEdge(edge1)
 // let _ = ntsettings.ReferenceLoopHandling <- ReferenceLoopHandling.Ignore//ReferenceLoopHandling.Serialize
 
 // JsonConvert.SerializeObject (edge1,ntsettings,)
+//HTML.show(graphData)
+
+Graph.empty()
+|> Graph.withNodes [ 
+        
+        Node.Init("Thomas",X = 0, Y = 10, Size = 10, Label = "A" )
+        Node.Init("Eric",X = 10, Y = 0, Size = 50, Label = "B" )
+    ]
+|> Graph.withEdge (Edge.Init("Thomas","Eric", Size = 10))
+|> Graph.show()
 
 
 
-HTML.show(graphData)
+
