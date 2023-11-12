@@ -17,11 +17,10 @@
     <Compile Include="Globals.fs" />
     <Compile Include="DisplayOptions.fs" />
     <Compile Include="Defaults.fs" />
-    <Compile Include="Html.fs" />
     <Compile Include="Sigma.fs" />
+    <Compile Include="Html.fs" />
+    <Compile Include="GraphAPI.fs" />
   </ItemGroup>
-
-  <ItemGroup />
 
   <ItemGroup>
     <PackageReference Include="DynamicObj" Version="2.0.0" />

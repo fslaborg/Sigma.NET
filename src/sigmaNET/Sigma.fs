@@ -7,6 +7,7 @@ type SigmaGraph() =
     inherit DynamicObj ()
 
     let tmpGraphData  = new GraphData()
+    let tmpLayout     = Layout.Random (RandomOptions())
 
     member this.AddNode (node:Node) = 
         tmpGraphData.addNode (node) 
@@ -15,36 +16,8 @@ type SigmaGraph() =
         tmpGraphData.addEdge(edge) 
 
 
-    member val GraphData  = tmpGraphData  with get,set 
-
-[<AutoOpen>]
-module Graph = 
-    let node key = Node.Init(key = key) 
-    let edge source target = Edge.Init(source = source,target = target) 
-    
+    member val GraphData  = tmpGraphData  with get,set
+    member val Layout     = tmpLayout  with get,set
 
 
-// Module to manipulate and sytely a graph
-type Graph() =
-    
-    static member empty () = SigmaGraph()
-
-    static member withNode (node:Node) (graph:SigmaGraph) = 
-        graph.AddNode(node)
-        graph       
-
-    static member withNodes (nodes:Node seq) (graph:SigmaGraph) = 
-        nodes |> Seq.iter (fun node -> graph.AddNode node) 
-        graph
-
-    static member withEdge (edge:Edge) (graph:SigmaGraph) = 
-        graph.AddEdge(edge)
-        graph       
-
-    static member withEdges (edges:Edge seq) (graph:SigmaGraph) = 
-        edges |> Seq.iter (fun edge -> graph.AddEdge edge) 
-        graph
-
-    static member show() (graph:SigmaGraph) = 
-        HTML.show(graph.GraphData)
         

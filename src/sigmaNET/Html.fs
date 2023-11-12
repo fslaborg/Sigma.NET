@@ -16,6 +16,7 @@ type HTML =
     static member CreateGraphScript
         (
             graphData: string,
+            layout : string,
             containerId: string,
             sigmaReference: JSlibReference,
             graphologyReference: JSlibReference
@@ -28,6 +29,7 @@ type HTML =
                     rawText (
                         Globals.SCRIPT_TEMPLATE
                             .Replace("[CONTAINERID]",containerId)
+                            .Replace("[LAYOUT]",layout)
                             .Replace("[GRAPHDATA]", graphData)
                     )
                 ]
@@ -95,6 +97,7 @@ type HTML =
     static member CreateGraphHTML
         (
             graphData: string,
+            layout : string,
             divId: string,
             sigmaScriptRef: JSlibReference,
             graphologyScriptRef: JSlibReference,
@@ -108,6 +111,7 @@ type HTML =
         let graphScript =
             HTML.CreateGraphScript(
                 graphData = graphData,
+                layout = layout,
                 containerId = divId,
                 sigmaReference = sigmaScriptRef,
                 graphologyReference = graphologyScriptRef
@@ -126,7 +130,7 @@ type HTML =
     static member toGraphHTMLNodes (
         ?DisplayOpts: DisplayOptions
     ) =
-        fun (graphData:GraphData) -> 
+        fun (graph:SigmaGraph) -> 
 
             let displayOptions = defaultArg DisplayOpts Defaults.DefaultDisplayOptions
             let sigmaReference = displayOptions |> DisplayOptions.getSigmaReference
@@ -138,10 +142,13 @@ type HTML =
             let ntsettings = new JsonSerializerSettings()
             let _ = ntsettings.ReferenceLoopHandling <- ReferenceLoopHandling.Ignore             
 
-            let jsonGraph = JsonConvert.SerializeObject (graphData,ntsettings)
+            let jsonGraph = JsonConvert.SerializeObject (graph.GraphData,ntsettings)
+
+            let layout = Layout.serialize graph.Layout                
 
             HTML.CreateGraphHTML(
                 graphData = jsonGraph,
+                layout = layout,
                 divId = id,
                 sigmaScriptRef = sigmaReference,
                 graphologyScriptRef = graphologyReference
@@ -150,8 +157,8 @@ type HTML =
     static member toGraphHTML(
         ?DisplayOpts: DisplayOptions
     ) =
-        fun (graphData:GraphData) -> 
-            graphData
+        fun (graph:SigmaGraph) -> 
+            graph
             |> HTML.toGraphHTMLNodes(?DisplayOpts = DisplayOpts)
             |> RenderView.AsString.htmlNodes
 
@@ -159,13 +166,13 @@ type HTML =
     static member toEmbeddedHTML (
         ?DisplayOpts: DisplayOptions
     ) =
-        fun (graphData:GraphData) ->
+        fun (graph:SigmaGraph) ->
             let displayOptions = defaultArg DisplayOpts Defaults.DefaultDisplayOptions
             let sigmaReference = DisplayOptions.getSigmaReference displayOptions
             let graphologyReference = DisplayOptions.getGraphologyReference displayOptions
             let graphologyLibraryReference = DisplayOptions.getGraphologyLibraryReference displayOptions
             HTML.Doc(
-                graphHTML = (HTML.toGraphHTMLNodes(DisplayOpts = displayOptions) graphData),
+                graphHTML = (HTML.toGraphHTMLNodes(DisplayOpts = displayOptions) graph),
                 sigmaReference = sigmaReference,
                 graphologyReference = graphologyReference,
                 graphologyLibraryReference = graphologyLibraryReference
@@ -186,9 +193,9 @@ type HTML =
             invalidOp "Not supported OS platform"
 
 
-    static member show (graphData:GraphData, ?DisplayOpts: DisplayOptions) = 
+    static member show (graph:SigmaGraph, ?DisplayOpts: DisplayOptions) = 
         let guid = Guid.NewGuid().ToString()
-        let html = HTML.toEmbeddedHTML(?DisplayOpts = DisplayOpts) graphData
+        let html = HTML.toEmbeddedHTML(?DisplayOpts = DisplayOpts) graph
         let tempPath = Path.GetTempPath()
         let file = sprintf "%s.html" guid
         let path = Path.Combine(tempPath, file)

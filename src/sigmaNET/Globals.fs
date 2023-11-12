@@ -20,7 +20,7 @@ module Globals =
     const container = document.getElementById("[CONTAINERID]");
     const graph = new graphology.Graph();
     graph.import([GRAPHDATA]);
-    
+    [LAYOUT]
     const renderer = new Sigma(graph, container);
     """
 
