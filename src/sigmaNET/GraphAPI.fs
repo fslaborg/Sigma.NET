@@ -57,6 +57,15 @@ type Graph() =
             graph.Layout <- Layout.FA2 (FA2Options.Init(?Iterations=Iterations,?GetEdgeWeight=GetEdgeWeight,?Settings=Settings))
             graph
 
+    [<CompiledName("WithNoverlap")>]
+    static member withNoverlap(
+        [<Optional; DefaultParameterValue(null)>] ?MaxIterations,
+        [<Optional; DefaultParameterValue(null)>] ?Settings) = 
+        fun (graph:SigmaGraph) ->
+            graph.Layout <- Layout.Noverlap (NoverlapOptions.Init(?MaxIterations = MaxIterations,?Settings=Settings))
+            graph
+
+
 
     /// Sets the size of a canvas (in pixels)
     [<CompiledName("WithSize")>]

@@ -24,5 +24,5 @@ module Defaults =
     /// reset global defaults to the initial values
     let reset () =
         DefaultWidth <- CssLength.Percent 100
-        DefaultHeight <- CssLength.PX 600
+        DefaultHeight <- CssLength.PX 900
         DefaultDisplayOptions <- DisplayOptions.initDefault()
