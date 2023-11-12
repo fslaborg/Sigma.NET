@@ -17,7 +17,9 @@ let data = JsonConvert.DeserializeObject<GraphData>(jsonTxt)
 Graph.empty()
 |> Graph.withNodes data.Nodes
 |> Graph.withEdges data.Edges
+|> Graph.withForceAtlas2(Iterations=100,FA2Settings=FA2Settings.Init(AdjustSizes=true,Gravity=10))
 |> Graph.show()
+
 
 
 

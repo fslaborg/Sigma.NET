@@ -101,8 +101,8 @@ type HTML =
             divId: string,
             sigmaScriptRef: JSlibReference,
             graphologyScriptRef: JSlibReference,
-            ?Width: int,
-            ?Height: int
+            ?Width: CssLength,
+            ?Height: CssLength
         ) =
         let width, height = 
             Width |> Option.defaultValue Defaults.DefaultWidth,
@@ -119,8 +119,9 @@ type HTML =
 
         [
             div
-                [ _id divId; _style $"width:{width}px; height:{height}px"]
+                [ _id divId; _style (sprintf "width: %s; height: %s" (CssLength.serialize width) (CssLength.serialize height) )]
                 [
+                    rawText "&nbsp"
                     comment "Cytoscape graph will be drawn inside this DIV"
                 ]
             graphScript
@@ -151,7 +152,10 @@ type HTML =
                 layout = layout,
                 divId = id,
                 sigmaScriptRef = sigmaReference,
-                graphologyScriptRef = graphologyReference
+                graphologyScriptRef = graphologyReference,
+                // Maybe we should use the DisplayOptions width and height here?
+                Width = graph.Width,
+                Height = graph.Height
             )
 
     static member toGraphHTML(

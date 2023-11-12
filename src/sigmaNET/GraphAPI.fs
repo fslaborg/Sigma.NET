@@ -17,6 +17,7 @@ type Graph() =
     [<CompiledName("Empty")>]
     static member empty () = SigmaGraph()
 
+    /// Creates a graph with a single node
     [<CompiledName("WithNode")>]
     static member withNode (node:Node) (graph:SigmaGraph) = 
         graph.AddNode(node)
@@ -39,9 +40,9 @@ type Graph() =
 
     [<CompiledName("WithRandomLayout")>] 
     static member withRandomLayout(
-        [<Optional; DefaultParameterValue(null)>] ?Dimensions,
-        [<Optional; DefaultParameterValue(null)>] ?Center, 
-        [<Optional; DefaultParameterValue(null)>] ?Scale
+        [<Optional; DefaultParameterValue(null)>] ?Scale,
+        [<Optional; DefaultParameterValue(null)>] ?Center,
+        [<Optional; DefaultParameterValue(null)>] ?Dimensions    
         ) = 
             fun (graph:SigmaGraph) -> 
                 graph.Layout <- Layout.Random (RandomOptions.Init(?Dimensions=Dimensions,?Center=Center,?Scale=Scale))
@@ -55,6 +56,22 @@ type Graph() =
         fun (graph:SigmaGraph) ->
             graph.Layout <- Layout.FA2 (FA2Options.Init(?Iterations=Iterations,?GetEdgeWeight=GetEdgeWeight,?Settings=Settings))
             graph
+
+
+    /// Sets the size of a canvas (in pixels)
+    [<CompiledName("WithSize")>]
+    static member withSize
+        (
+            [<Optional; DefaultParameterValue(null)>] ?Width: CssLength,
+            [<Optional; DefaultParameterValue(null)>] ?Height: CssLength
+        ) =
+
+        fun (graph:SigmaGraph) ->
+            graph.Width <- Option.defaultValue Defaults.DefaultWidth Width
+            graph.Height <- Option.defaultValue Defaults.DefaultHeight Height
+            
+            graph
+
 
     [<CompiledName("Show")>] 
     static member show() (graph:SigmaGraph) = 

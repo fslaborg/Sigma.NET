@@ -13,16 +13,16 @@ open Giraffe.ViewEngine
 module Defaults =
 
     /// The default width of the graph container in generated html files. Default: 600 (px)
-    let mutable DefaultWidth = 600
+    let mutable DefaultWidth = CssLength.Percent 100
 
     /// The default height of the graph container in generated html files. Default: 600 (px)
-    let mutable DefaultHeight = 600
+    let mutable DefaultHeight = CssLength.PX 900
 
 
     let mutable DefaultDisplayOptions = DisplayOptions.initDefault()
 
     /// reset global defaults to the initial values
     let reset () =
-        DefaultWidth <- 600
-        DefaultHeight <- 600
+        DefaultWidth <- CssLength.Percent 100
+        DefaultHeight <- CssLength.PX 600
         DefaultDisplayOptions <- DisplayOptions.initDefault()
