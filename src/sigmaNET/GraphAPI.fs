@@ -48,6 +48,17 @@ type Graph() =
                 graph.Layout <- Layout.Random (RandomOptions.Init(?Dimensions=Dimensions,?Center=Center,?Scale=Scale))
                 graph   
 
+    [<CompiledName("WithCircularLayout")>]
+    static member withCircularLayout(
+        [<Optional; DefaultParameterValue(null)>] ?Scale,
+        [<Optional; DefaultParameterValue(null)>] ?Center
+        ) = 
+            fun (graph:SigmaGraph) -> 
+                graph.Layout <- Layout.Circular (CircularOptions.Init(?Scale=Scale,?Center=Center))
+                graph   
+ 
+
+
     [<CompiledName("WithForceAtlas2")>]
     static member withForceAtlas2(
         [<Optional; DefaultParameterValue(null)>] ?Iterations, 
