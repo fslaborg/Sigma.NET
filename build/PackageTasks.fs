@@ -25,6 +25,7 @@ let pack = BuildTask.create "Pack" [clean; build; runTests] {
             |> Seq.iter (Fake.DotNet.DotNet.pack (fun p ->
                 let msBuildParams =
                     {p.MSBuildParams with 
+                        DisableInternalBinLog=true; // Fix: Unsupported log file format. Latest supported version is 14, the log file has version 16.
                         Properties = ([
                             "Version",stableVersionTag
                             "PackageReleaseNotes",  (release.Notes |> List.map replaceCommitLink |> String.concat "\r\n" )
@@ -47,6 +48,7 @@ let packPrerelease = BuildTask.create "PackPrerelease" [setPrereleaseTag; clean;
             |> Seq.iter (Fake.DotNet.DotNet.pack (fun p ->
                         let msBuildParams =
                             {p.MSBuildParams with 
+                                DisableInternalBinLog=true; // Fix: Unsupported log file format. Latest supported version is 14, the log file has version 16.
                                 Properties = ([
                                     "Version", prereleaseTag
                                     "PackageReleaseNotes",  (release.Notes |> List.map replaceCommitLink  |> String.toLines )

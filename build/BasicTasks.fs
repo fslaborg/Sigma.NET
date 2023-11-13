@@ -26,5 +26,10 @@ let clean = BuildTask.create "Clean" [] {
 
 let build = BuildTask.create "Build" [clean] {
     solutionFile
-    |> DotNet.build id
+    |> DotNet.build (fun param ->
+        { param with
+            // Fix: Unsupported log file format. Latest supported version is 14, the log file has version 16.
+            MSBuildParams = {param.MSBuildParams with DisableInternalBinLog = true}
+        }
+    )
 }

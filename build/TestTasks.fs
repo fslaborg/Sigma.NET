@@ -12,6 +12,7 @@ let runTests = BuildTask.create "RunTests" [clean; build] {
         Fake.DotNet.DotNet.test(fun testParams ->
             {
                 testParams with
+                    MSBuildParams = {testParams.MSBuildParams with DisableInternalBinLog = true}
                     Logger = Some "console;verbosity=detailed"
                     Configuration = DotNet.BuildConfiguration.fromString configuration
                     NoBuild = true
@@ -26,6 +27,8 @@ let runTestsWithCodeCov = BuildTask.create "RunTestsWithCodeCov" [clean; build] 
         Fake.DotNet.DotNet.test(fun testParams ->
             {
                 testParams with
+                    // Fix: Unsupported log file format. Latest supported version is 14, the log file has version 16.
+                    MSBuildParams = {testParams.MSBuildParams with DisableInternalBinLog = true}
                     Logger              = Some "console;verbosity=detailed"
                     Configuration       = DotNet.BuildConfiguration.fromString configuration
                     NoBuild             = true
