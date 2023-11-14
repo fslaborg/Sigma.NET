@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="sigmaNET.js" copyToOutput="true">
+      <IncludeInPackage>true</IncludeInPackage>
+      <CopyToOutput>true</CopyToOutput>
+      <BuildAction>Content</BuildAction>
+      <copyToOutput>true</copyToOutput>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="graphology-library.min.js" />
     <EmbeddedResource Include="graphology.umd.min.js" />
     <EmbeddedResource Include="sigma.min.js" />
@@ -21,6 +28,8 @@
     <Compile Include="Html.fs" />
     <Compile Include="GraphAPI.fs" />
   </ItemGroup>
+
+  <ItemGroup />
 
   <ItemGroup>
     <PackageReference Include="DynamicObj" Version="2.0.0" />

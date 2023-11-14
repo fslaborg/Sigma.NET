@@ -1,5 +1,7 @@
 ﻿namespace sigmaNET
 
+open System
+
 //module internal InternalUtils =
 module InternalUtils =
 
@@ -26,3 +28,8 @@ module InternalUtils =
         use stream = assembly.GetManifestResourceStream(resourceName)
         use reader = new StreamReader(stream)
         reader.ReadToEnd()
+
+    let getFullPathSigmaNETLibraryJS () =
+        let home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
+        $"{home}/.nuget/packages/sigmanet/0.0.0-dev/content/sigmaNET.js"
+        

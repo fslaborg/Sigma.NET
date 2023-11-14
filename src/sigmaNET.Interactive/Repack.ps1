@@ -6,5 +6,5 @@ Remove-Item -Recurse ~\.nuget\packages\sigmanet* -Force
 # build and pack Plotly.NET.Interactive
 cd ../../
 ./build.cmd
-dotnet pack -c Release -p:PackageVersion=0.0.1-dev -o "./pkg"
+dotnet pack -c Release -p:PackageVersion=0.0.0-dev -o "./pkg"
 cd src/sigmaNET.Interactive

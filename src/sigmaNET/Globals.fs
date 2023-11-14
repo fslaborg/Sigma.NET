@@ -23,7 +23,6 @@ module Globals =
     [LAYOUT]
     const renderer = new Sigma(graph, container);
     """
-
     //[<Literal>]
     //let REQUIREJS_SCRIPT_TEMPLATE = """
     //var fsharpCytoscapeRequire = requirejs.config({context:'cytoscape-net',paths:{cytoscape:'[REQUIRE_SRC]'}}) || require;

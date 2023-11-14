@@ -3,19 +3,19 @@
 #r "nuget: Giraffe.ViewEngine, 1.4.0"
 #r "./bin/Debug/net6.0/sigmaNET.dll"
 
-#r "nuget: sigmaNET, 0.4.0"
+#r "nuget: Graphoscope, 0.4.0"
 open sigmaNET
 
 open System
 open System.IO
 open Newtonsoft.Json
-open sigmaNET
+open Graphoscope
 
-open sigmaNET.RandomModels
+open Graphoscope.RandomModels
 
 let colors = [|"#F2FFE9";"#A6CF98";"#557C55";"#FA7070"|]
 
-let N = 900
+let N = 5000
 let p = 0.005
 let rnd = new Random()
 let random_number = rnd.Next(1, 51)
@@ -36,9 +36,9 @@ Graph.empty()
 
 ]
 
-|> Graph.withForceAtlas2(Iterations=100,Settings=FA2Settings.Init(AdjustSizes=true,Gravity=5),GetEdgeWeight="size")
+// |> Graph.withForceAtlas2(Iterations=100,Settings=FA2Settings.Init(AdjustSizes=true,Gravity=5),GetEdgeWeight="size")
 // |> Graph.withNoverlap(50)
-// |> Graph.withCircularLayout()
+|> Graph.withCircularLayout()
 |> Graph.show()
 
 
