@@ -6,6 +6,11 @@ module Globals =
     open System.Runtime.InteropServices
     open Newtonsoft.Json
 
+    [<Literal>]
+    let NUGET_VERSION = "0.0.0-dev"
+    
+    [<Literal>]
+    let GRAPHOLOGY_LIB_VERSION = "0.8.0"
 
     /// The sigma js version loaded from cdn in rendered html docs
     [<Literal>]
@@ -34,7 +39,7 @@ module Globals =
             const container = document.getElementById("[CONTAINERID]");
             const graph = new graphology.Graph();
             graph.import([GRAPHDATA]);
-              
+            [LAYOUT]  
             const renderer = new Sigma(graph, container);
         
         });

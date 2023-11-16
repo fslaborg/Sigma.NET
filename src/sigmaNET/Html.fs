@@ -19,12 +19,10 @@ type HTML =
             graphData: string,
             layout : string,
             containerId: string,
-            sigmaJSRef: JSlibReference,
-            graphologyJSRef: JSlibReference,
-            graphology_LibraryJSRef: JSlibReference
+            sigmaJSRef: JSlibReference
         ) =
-        match sigmaJSRef,graphologyJSRef,graphology_LibraryJSRef with
-        | Require s,Require g, Require gl ->
+        match sigmaJSRef with
+        | Require gjs ->
             script
                 [ _type "text/javascript" ]
                 [
@@ -33,9 +31,9 @@ type HTML =
                                   //'[GRAPHOLOGY_JS]',
                                   //'[SIGMA_JS]',
                                   //'[GRAPHOLOGY-LIB_JS]',
-                            .Replace("[GRAPHOLOGY_JS]", g)
-                            .Replace("[SIGMA_JS]", s)
-                            .Replace("[GRAPHOLOGY-LIB_JS]", gl)
+                            .Replace("[GRAPHOLOGY_JS]", gjs.Graphology)
+                            .Replace("[SIGMA_JS]", gjs.Sigma)
+                            .Replace("[GRAPHOLOGY-LIB_JS]", gjs.GraphologyLib)
                             .Replace("[CONTAINERID]",containerId)
                             .Replace("[LAYOUT]",layout)
                             .Replace("[GRAPHDATA]", graphData)
@@ -57,51 +55,36 @@ type HTML =
     static member Doc(
         graphHTML: XmlNode list, 
         sigmaJSRef: JSlibReference,
-        graphologyJSRef: JSlibReference,
-        graphology_LibraryJSRef: JSlibReference,
         ?AdditionalHeadTags
     ) =
         let additionalHeadTags =
             defaultArg AdditionalHeadTags []
 
-        let graphologyScriptRef =
-            match graphologyJSRef with
-            | Local fdp -> script [ _src fdp ] []
-            | CDN cdn -> script [ _src cdn ] []
-            | Full ->
-                script
-                    [ _type "text/javascript" ]
-                    [
-                        rawText (InternalUtils.getFullSigmaJS ())
-                    ]
-            | NoReference -> rawText ""
-            | Require _ -> rawText ""
-
-        let graphologyLibScriptRef =
-            match graphology_LibraryJSRef with
-            | Local fdp -> script [ _src fdp ] []
-            | CDN cdn -> script [ _src cdn ] []
-            | Full ->
-                script
-                    [ _type "text/javascript" ]
-                    [
-                        rawText (InternalUtils.getFullSigmaJS ())
-                    ]
-            | NoReference -> rawText ""
-            | Require _ -> rawText ""
-
-        let sigmaScriptRef =
+        let sigmaScriptRefs =
             match sigmaJSRef with
-            | Local fdp -> script [ _src fdp ] []
-            | CDN cdn -> script [ _src cdn ] []
-            | Full ->
-                script
-                    [ _type "text/javascript" ]
-                    [
-                        rawText (InternalUtils.getFullSigmaJS ())
-                    ]
-            | NoReference -> rawText ""
-            | Require _ -> rawText ""
+            | Local gjs -> [
+                                script [ _src gjs.Graphology ] []
+                                script [ _src gjs.Sigma ] []
+                                script [ _src gjs.GraphologyLib ] []
+                            
+                           ]
+            | CDN gjs -> [
+                                script [ _src gjs.Graphology ] []
+                                script [ _src gjs.Sigma ] []
+                                script [ _src gjs.GraphologyLib ] []
+                            
+                           ]
+            | Full gjs -> [
+                                script [ _type "text/javascript" ] [ rawText gjs.Graphology ]
+                                script [ _type "text/javascript" ] [ rawText gjs.Sigma ]
+                                script [ _type "text/javascript" ] [ rawText gjs.GraphologyLib ]
+                            ]
+            | NoReference -> [rawText ""]
+            | Require gjs -> [
+                                script [ _src gjs.Graphology ] []
+                                script [ _src gjs.Sigma ] []
+                                script [ _src gjs.GraphologyLib ] []
+                           ]
 
 
         html
@@ -110,9 +93,7 @@ type HTML =
                 head
                     []
                     [
-                        graphologyScriptRef
-                        graphologyLibScriptRef
-                        sigmaScriptRef
+                        yield! sigmaScriptRefs
                         yield! additionalHeadTags
                     ]
                 body [] [ yield! graphHTML]
@@ -124,8 +105,6 @@ type HTML =
             layout : string,
             divId: string,
             sigmaJSRef: JSlibReference,
-            graphologyJSRef: JSlibReference,
-            graphology_LibraryJSRef: JSlibReference,
             ?Width: CssLength,
             ?Height: CssLength
         ) =
@@ -138,9 +117,7 @@ type HTML =
                 graphData = graphData,
                 layout = layout,
                 containerId = divId,
-                sigmaJSRef = sigmaJSRef,
-                graphologyJSRef = graphologyJSRef,
-                graphology_LibraryJSRef = graphology_LibraryJSRef
+                sigmaJSRef = sigmaJSRef
             )
 
         [
@@ -165,8 +142,6 @@ type HTML =
 
             let displayOptions = defaultArg DisplayOpts Defaults.DefaultDisplayOptions
             let sigmaReference = displayOptions |> DisplayOptions.getSigmaReference
-            let graphologyReference = displayOptions |> DisplayOptions.getGraphologyReference
-            let graphologyLibReference = displayOptions |> DisplayOptions.getGraphologyLibReference
 
             let guid = Guid.NewGuid().ToString()
             let id   = sprintf "e%s" <| Guid.NewGuid().ToString().Replace("-","").Substring(0,10)
@@ -183,8 +158,6 @@ type HTML =
                 layout = layout,
                 divId = id,
                 sigmaJSRef = sigmaReference,
-                graphologyJSRef = graphologyReference,
-                graphology_LibraryJSRef = graphologyLibReference,
                 // Maybe we should use the DisplayOptions width and height here?
                 Width = graph.Width,
                 Height = graph.Height
@@ -205,13 +178,9 @@ type HTML =
         fun (graph:SigmaGraph) ->
             let displayOptions = defaultArg DisplayOpts Defaults.DefaultDisplayOptions
             let sigmaReference = DisplayOptions.getSigmaReference displayOptions
-            let graphologyReference = DisplayOptions.getGraphologyReference displayOptions
-            let graphologyLibReference = DisplayOptions.getGraphologyLibReference displayOptions
             HTML.Doc(
                 graphHTML = (HTML.toGraphHTMLNodes(DisplayOpts = displayOptions) graph),
-                sigmaJSRef = sigmaReference,
-                graphologyJSRef = graphologyReference,
-                graphology_LibraryJSRef = graphologyLibReference
+                sigmaJSRef = sigmaReference
             )
             |> RenderView.AsString.htmlDocument
 
