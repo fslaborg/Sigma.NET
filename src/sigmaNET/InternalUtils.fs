@@ -38,7 +38,7 @@ module InternalUtils =
     let getFullPathGraphologyJS () =
         //Assembly.GetExecutingAssembly().GetName().Version.ToString()
         let home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile).Replace("\\", "/")
-        $"https://cdnjs.cloudflare.com/ajax/libs/graphology/{Globals.SIGMAJS_VERSION}/graphology.esm.min.js"
+        $"https://cdnjs.cloudflare.com/ajax/libs/graphology/{Globals.GRAPHOLOGY_VERSION}/graphology.umd.min.js"
         // $"{home}/.nuget/packages/sigmanet/0.0.0-dev/content/graphology.umd.min.js"
 
     let getFullPathGraphology_LibJS () =
