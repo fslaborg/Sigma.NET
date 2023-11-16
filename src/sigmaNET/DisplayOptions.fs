@@ -8,12 +8,13 @@ open Giraffe.ViewEngine
 
 ///Sets how the javascript library is referenced in the head of html docs.
 type JSlibReference =
+    | Local of string 
     /// The url for a script tag that references the javascript library CDN
     | CDN of string
     /// Full javascript library source code (~100KB) is included in the output. HTML files generated with this option are fully self-contained and can be used offline
     | Full
     ///// Use requirejs to reference javascript library from a url
-    //| Require of string
+    | Require of string
     //include no javascript library script at all. This can be helpfull when embedding the output into a document that already references the javascript library.
     | NoReference
 
@@ -31,17 +32,17 @@ type DisplayOptions() =
         (
             [<Optional; DefaultParameterValue(null)>] ?AdditionalHeadTags: XmlNode list,
             [<Optional; DefaultParameterValue(null)>] ?Description: XmlNode list,
-            [<Optional; DefaultParameterValue(null)>] ?SigmaJSReference: JSlibReference,
-            [<Optional; DefaultParameterValue(null)>] ?GraphologyJSReference: JSlibReference,
-            [<Optional; DefaultParameterValue(null)>] ?GraphologyLibraryJSReference: JSlibReference
+            [<Optional; DefaultParameterValue(null)>] ?SigmaJSRef: JSlibReference,
+            [<Optional; DefaultParameterValue(null)>] ?GraphologyJSRef: JSlibReference,
+            [<Optional; DefaultParameterValue(null)>] ?Graphology_LibraryJSRef: JSlibReference
         ) =
         DisplayOptions()
         |> DisplayOptions.style (
             ?AdditionalHeadTags = AdditionalHeadTags,
             ?Description = Description,
-            ?SigmaJSReference = SigmaJSReference,
-            ?GraphologyJSReference = GraphologyJSReference,
-            ?GraphologyLibraryJSReference = GraphologyLibraryJSReference
+            ?SigmaJSRef = SigmaJSRef,
+            ?GraphologyJSRef = GraphologyJSRef,
+            ?Graphology_LibraryJSRef = Graphology_LibraryJSRef
         )
 
     /// <summary>
@@ -54,17 +55,17 @@ type DisplayOptions() =
         (
             [<Optional; DefaultParameterValue(null)>] ?AdditionalHeadTags: XmlNode list,
             [<Optional; DefaultParameterValue(null)>] ?Description: XmlNode list,
-            [<Optional; DefaultParameterValue(null)>] ?SigmaJSReference: JSlibReference,
-            [<Optional; DefaultParameterValue(null)>] ?GraphologyJSReference: JSlibReference,
-            [<Optional; DefaultParameterValue(null)>] ?GraphologyLibraryJSReference: JSlibReference
+            [<Optional; DefaultParameterValue(null)>] ?SigmaJSRef: JSlibReference,
+            [<Optional; DefaultParameterValue(null)>] ?GraphologyJSRef: JSlibReference,
+            [<Optional; DefaultParameterValue(null)>] ?Graphology_LibraryJSRef: JSlibReference
         ) =
         (fun (displayOpts: DisplayOptions) ->
 
             AdditionalHeadTags |> DynObj.setValueOpt displayOpts "AdditionalHeadTags"
             Description |> DynObj.setValueOpt displayOpts "Description"
-            SigmaJSReference |> DynObj.setValueOpt displayOpts "SigmaJSReference"
-            GraphologyJSReference |> DynObj.setValueOpt displayOpts "GraphologyJSReference"
-            GraphologyLibraryJSReference |> DynObj.setValueOpt displayOpts "GraphologyLibraryJSReference"
+            SigmaJSRef |> DynObj.setValueOpt displayOpts "SigmaJSRef"
+            GraphologyJSRef |> DynObj.setValueOpt displayOpts "GraphologyJSRef"
+            Graphology_LibraryJSRef |> DynObj.setValueOpt displayOpts "Graphology_LibraryJSRef"
 
             displayOpts)
 
@@ -74,10 +75,9 @@ type DisplayOptions() =
     static member initCDNOnly() =
         DisplayOptions()
         |> DisplayOptions.style (
-            SigmaJSReference      = CDN $"https://cdnjs.cloudflare.com/ajax/libs/sigma.js/{Globals.SIGMAJS_VERSION}/sigma.min.js",
-            GraphologyJSReference = CDN $"https://cdnjs.cloudflare.com/ajax/libs/graphology/{Globals.GRAPHOLOGY_VERSION}/graphology.umd.min.js",
-            GraphologyLibraryJSReference = Full
-            
+            SigmaJSRef               = Local (InternalUtils.getFullPathSigmaJS ()),
+            GraphologyJSRef          = Local (InternalUtils.getFullPathGraphologyJS ()),
+            Graphology_LibraryJSRef  = Local (InternalUtils.getFullPathGraphology_LibJS ())
         )
 
     /// <summary>
@@ -85,9 +85,9 @@ type DisplayOptions() =
     /// </summary>
     static member initDefault() =
         DisplayOptions.init (
-            SigmaJSReference = CDN $"https://cdnjs.cloudflare.com/ajax/libs/sigma.js/{Globals.SIGMAJS_VERSION}/sigma.min.js",
-            GraphologyJSReference = CDN $"https://cdnjs.cloudflare.com/ajax/libs/graphology/{Globals.GRAPHOLOGY_VERSION}/graphology.umd.min.js",
-            GraphologyLibraryJSReference = Full,
+            SigmaJSRef = Local (InternalUtils.getFullPathSigmaJS ()),
+            GraphologyJSRef = Local (InternalUtils.getFullPathGraphologyJS ()),
+            Graphology_LibraryJSRef = Local (InternalUtils.getFullPathGraphology_LibJS ()),
             AdditionalHeadTags =
                 [
                     title [] [ str "sigmaNET Datavisualization" ]
@@ -143,11 +143,11 @@ type DisplayOptions() =
 
     static member setSigmaReference(sigmaJSReference: JSlibReference) =
         (fun (displayOpts: DisplayOptions) ->
-            sigmaJSReference |> DynObj.setValue displayOpts "SigmaJSReference"
+            sigmaJSReference |> DynObj.setValue displayOpts "SigmaJSRef"
             displayOpts)
 
     static member tryGetSigmaReference(displayOpts: DisplayOptions) =
-        displayOpts.TryGetTypedValue<JSlibReference>("SigmaJSReference")
+        displayOpts.TryGetTypedValue<JSlibReference>("SigmaJSRef")
 
 
     static member getSigmaReference(displayOpts: DisplayOptions) =
@@ -156,24 +156,27 @@ type DisplayOptions() =
     //
     static member setGraphologyReference(graphologyJSReference: JSlibReference) =
         (fun (displayOpts: DisplayOptions) ->
-            graphologyJSReference |> DynObj.setValue displayOpts "GraphologyJSReference"
+            graphologyJSReference |> DynObj.setValue displayOpts "GraphologyJSRef"
             displayOpts)
 
     static member tryGetGraphologyReference(displayOpts: DisplayOptions) =
-        displayOpts.TryGetTypedValue<JSlibReference>("GraphologyJSReference")
+        displayOpts.TryGetTypedValue<JSlibReference>("GraphologyJSRef")
+
 
     static member getGraphologyReference(displayOpts: DisplayOptions) =
         displayOpts |> DisplayOptions.tryGetGraphologyReference |> Option.defaultValue (JSlibReference.NoReference)
 
+
     //
-    static member setGraphologyLibraryReference(graphologyLibraryJSReference: JSlibReference) =
+    static member setGraphologyLibReference(graphologyLibJSReference: JSlibReference) =
         (fun (displayOpts: DisplayOptions) ->
-            graphologyLibraryJSReference |> DynObj.setValue displayOpts "GraphologyLibraryJSReference"
+            graphologyLibJSReference |> DynObj.setValue displayOpts "Graphology_LibraryJSRef"
             displayOpts)
 
-    static member tryGetGraphologyLibraryReference(displayOpts: DisplayOptions) =
-        displayOpts.TryGetTypedValue<JSlibReference>("GraphologyLibraryJSReference")
+    static member tryGetGraphologyLibReference(displayOpts: DisplayOptions) =
+        displayOpts.TryGetTypedValue<JSlibReference>("Graphology_LibraryJSRef")
 
-    static member getGraphologyLibraryReference(displayOpts: DisplayOptions) =
-        displayOpts |> DisplayOptions.tryGetGraphologyLibraryReference |> Option.defaultValue (JSlibReference.NoReference)
+
+    static member getGraphologyLibReference(displayOpts: DisplayOptions) =
+        displayOpts |> DisplayOptions.tryGetGraphologyLibReference |> Option.defaultValue (JSlibReference.NoReference)
 

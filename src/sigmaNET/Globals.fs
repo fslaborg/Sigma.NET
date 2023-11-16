@@ -23,16 +23,35 @@ module Globals =
     [LAYOUT]
     const renderer = new Sigma(graph, container);
     """
-    //[<Literal>]
-    //let REQUIREJS_SCRIPT_TEMPLATE = """
-    //var fsharpCytoscapeRequire = requirejs.config({context:'cytoscape-net',paths:{cytoscape:'[REQUIRE_SRC]'}}) || require;
+    [<Literal>]
+    let REQUIREJS_SCRIPT_TEMPLATE = """
+    var renderSigma_SCRIPTID = function() {
+        require([
+          '[GRAPHOLOGY_JS]',
+          '[SIGMA_JS]',
+          '[GRAPHOLOGY-LIB_JS]',
+        ], (graphology,_,graphologyLibrary)=>{          
+              const container = document.getElementById("[CONTAINERID]");
+              const graph = new graphology.Graph();
+              graph.import([GRAPHDATA]);
+              
+              const renderer = new Sigma(graph, container);
         
-    //fsharpCytoscapeRequire(['cytoscape'], function(cytoscape) {
-    //    var graphdata = [GRAPHDATA]
-    //    var cy = cytoscape( graphdata );
-    //    cy.userZoomingEnabled( [ZOOMING] );
-    //});
-    //"""
+            });
+    };
+    if ((typeof(requirejs) !==  typeof(Function)) || (typeof(requirejs.config) !== typeof(Function))) {
+        var script = document.createElement("script");
+        script.setAttribute("charset", "utf-8");
+        script.setAttribute("src", "https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js");
+        script.onload = function(){
+            renderSigma_SCRIPTID();
+        };
+        document.getElementsByTagName("head")[0].appendChild(script);
+    }
+    else {
+        renderSigma_SCRIPTID();
+    }
+    """
 
     /// base64 encoded favicon logo for generated htmls
     [<Literal>]

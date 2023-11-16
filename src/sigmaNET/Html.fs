@@ -12,16 +12,35 @@ open Giraffe.ViewEngine
 
 /// HTML template for Cytoscape
 type HTML =
-    
+ 
+
     static member CreateGraphScript
         (
             graphData: string,
             layout : string,
             containerId: string,
-            sigmaReference: JSlibReference,
-            graphologyReference: JSlibReference
+            sigmaJSRef: JSlibReference,
+            graphologyJSRef: JSlibReference,
+            graphology_LibraryJSRef: JSlibReference
         ) =
-        match sigmaReference with
+        match sigmaJSRef,graphologyJSRef,graphology_LibraryJSRef with
+        | Require s,Require g, Require gl ->
+            script
+                [ _type "text/javascript" ]
+                [
+                    rawText (
+                        Globals.REQUIREJS_SCRIPT_TEMPLATE
+                                  //'[GRAPHOLOGY_JS]',
+                                  //'[SIGMA_JS]',
+                                  //'[GRAPHOLOGY-LIB_JS]',
+                            .Replace("[GRAPHOLOGY_JS]", g)
+                            .Replace("[SIGMA_JS]", s)
+                            .Replace("[GRAPHOLOGY-LIB_JS]", gl)
+                            .Replace("[CONTAINERID]",containerId)
+                            .Replace("[LAYOUT]",layout)
+                            .Replace("[GRAPHDATA]", graphData)
+                    )
+                ]
         | _ ->
             script
                 [ _type "text/javascript" ]
@@ -37,39 +56,17 @@ type HTML =
 
     static member Doc(
         graphHTML: XmlNode list, 
-        sigmaReference: JSlibReference, 
-        graphologyReference: JSlibReference,
-        graphologyLibraryReference : JSlibReference,
+        sigmaJSRef: JSlibReference,
+        graphologyJSRef: JSlibReference,
+        graphology_LibraryJSRef: JSlibReference,
         ?AdditionalHeadTags
     ) =
         let additionalHeadTags =
             defaultArg AdditionalHeadTags []
 
         let graphologyScriptRef =
-            match graphologyReference with
-            | CDN cdn -> script [ _src cdn ] []
-            | Full ->
-                script
-                    [ _type "text/javascript" ]
-                    [
-                        rawText (InternalUtils.getFullGraphologyJS ())
-                    ]
-            | NoReference -> rawText ""
-            //| Require _ -> rawText ""
-
-        let graphologyLibraryScriptRef =
-            match graphologyLibraryReference with
-            | Full ->
-                script
-                    [ _type "text/javascript" ]
-                    [
-                        rawText (InternalUtils.getFullGraphologyLibraryJS ())
-                    ]
-            | _ -> rawText ""
-            //| Require _ -> rawText ""
-
-        let sigmaScriptRef =
-            match sigmaReference with
+            match graphologyJSRef with
+            | Local fdp -> script [ _src fdp ] []
             | CDN cdn -> script [ _src cdn ] []
             | Full ->
                 script
@@ -78,7 +75,34 @@ type HTML =
                         rawText (InternalUtils.getFullSigmaJS ())
                     ]
             | NoReference -> rawText ""
-            //| Require _ -> rawText ""
+            | Require _ -> rawText ""
+
+        let graphologyLibScriptRef =
+            match graphology_LibraryJSRef with
+            | Local fdp -> script [ _src fdp ] []
+            | CDN cdn -> script [ _src cdn ] []
+            | Full ->
+                script
+                    [ _type "text/javascript" ]
+                    [
+                        rawText (InternalUtils.getFullSigmaJS ())
+                    ]
+            | NoReference -> rawText ""
+            | Require _ -> rawText ""
+
+        let sigmaScriptRef =
+            match sigmaJSRef with
+            | Local fdp -> script [ _src fdp ] []
+            | CDN cdn -> script [ _src cdn ] []
+            | Full ->
+                script
+                    [ _type "text/javascript" ]
+                    [
+                        rawText (InternalUtils.getFullSigmaJS ())
+                    ]
+            | NoReference -> rawText ""
+            | Require _ -> rawText ""
+
 
         html
             []
@@ -87,7 +111,7 @@ type HTML =
                     []
                     [
                         graphologyScriptRef
-                        graphologyLibraryScriptRef
+                        graphologyLibScriptRef
                         sigmaScriptRef
                         yield! additionalHeadTags
                     ]
@@ -99,8 +123,9 @@ type HTML =
             graphData: string,
             layout : string,
             divId: string,
-            sigmaScriptRef: JSlibReference,
-            graphologyScriptRef: JSlibReference,
+            sigmaJSRef: JSlibReference,
+            graphologyJSRef: JSlibReference,
+            graphology_LibraryJSRef: JSlibReference,
             ?Width: CssLength,
             ?Height: CssLength
         ) =
@@ -113,18 +138,23 @@ type HTML =
                 graphData = graphData,
                 layout = layout,
                 containerId = divId,
-                sigmaReference = sigmaScriptRef,
-                graphologyReference = graphologyScriptRef
+                sigmaJSRef = sigmaJSRef,
+                graphologyJSRef = graphologyJSRef,
+                graphology_LibraryJSRef = graphology_LibraryJSRef
             )
 
         [
-            div
-                [ _id divId; _style (sprintf "width: %s; height: %s" (CssLength.serialize width) (CssLength.serialize height) )]
+            
+            div [ _id "graph" ] // TODO: maybe remove this div?
                 [
-                    rawText "&nbsp"
-                    comment "Cytoscape graph will be drawn inside this DIV"
+                    div
+                        [ _id divId; _style (sprintf "width: %s; height: %s" (CssLength.serialize width) (CssLength.serialize height) )]
+                        [
+                            rawText "&nbsp"
+                            comment "SigmaNET graph will be drawn inside this DIV"
+                        ]
+                    graphScript
                 ]
-            graphScript
         ]
 
     /// Converts a CyGraph to it HTML representation. The div layer has a default size of 600 if not specified otherwise.
@@ -136,6 +166,7 @@ type HTML =
             let displayOptions = defaultArg DisplayOpts Defaults.DefaultDisplayOptions
             let sigmaReference = displayOptions |> DisplayOptions.getSigmaReference
             let graphologyReference = displayOptions |> DisplayOptions.getGraphologyReference
+            let graphologyLibReference = displayOptions |> DisplayOptions.getGraphologyLibReference
 
             let guid = Guid.NewGuid().ToString()
             let id   = sprintf "e%s" <| Guid.NewGuid().ToString().Replace("-","").Substring(0,10)
@@ -151,8 +182,9 @@ type HTML =
                 graphData = jsonGraph,
                 layout = layout,
                 divId = id,
-                sigmaScriptRef = sigmaReference,
-                graphologyScriptRef = graphologyReference,
+                sigmaJSRef = sigmaReference,
+                graphologyJSRef = graphologyReference,
+                graphology_LibraryJSRef = graphologyLibReference,
                 // Maybe we should use the DisplayOptions width and height here?
                 Width = graph.Width,
                 Height = graph.Height
@@ -174,12 +206,12 @@ type HTML =
             let displayOptions = defaultArg DisplayOpts Defaults.DefaultDisplayOptions
             let sigmaReference = DisplayOptions.getSigmaReference displayOptions
             let graphologyReference = DisplayOptions.getGraphologyReference displayOptions
-            let graphologyLibraryReference = DisplayOptions.getGraphologyLibraryReference displayOptions
+            let graphologyLibReference = DisplayOptions.getGraphologyLibReference displayOptions
             HTML.Doc(
                 graphHTML = (HTML.toGraphHTMLNodes(DisplayOpts = displayOptions) graph),
-                sigmaReference = sigmaReference,
-                graphologyReference = graphologyReference,
-                graphologyLibraryReference = graphologyLibraryReference
+                sigmaJSRef = sigmaReference,
+                graphologyJSRef = graphologyReference,
+                graphology_LibraryJSRef = graphologyLibReference
             )
             |> RenderView.AsString.htmlDocument
 

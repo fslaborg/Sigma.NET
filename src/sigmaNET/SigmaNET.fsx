@@ -15,7 +15,7 @@ open Graphoscope.RandomModels
 
 let colors = [|"#F2FFE9";"#A6CF98";"#557C55";"#FA7070"|]
 
-let N = 5000
+let N = 50
 let p = 0.005
 let rnd = new Random()
 let random_number = rnd.Next(1, 51)

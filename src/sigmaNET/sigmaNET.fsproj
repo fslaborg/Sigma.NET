@@ -6,22 +6,24 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="sigmaNET.js" copyToOutput="true">
+    <Content Include="graphology-library.min.js" copyToOutput="true">
       <IncludeInPackage>true</IncludeInPackage>
-      <CopyToOutput>true</CopyToOutput>
-      <BuildAction>Content</BuildAction>
-      <copyToOutput>true</copyToOutput>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="graphology.umd.min.js" copyToOutput="true">
+      <IncludeInPackage>true</IncludeInPackage>
+    </Content>
+    <Content Include="sigma.min.js" copyToOutput="true">
+      <IncludeInPackage>true</IncludeInPackage>
     </Content>
     <EmbeddedResource Include="graphology-library.min.js" />
     <EmbeddedResource Include="graphology.umd.min.js" />
     <EmbeddedResource Include="sigma.min.js" />
+    <Compile Include="Globals.fs" />
     <Compile Include="InternalUtils.fs" />
     <Compile Include="Layout.fs" />
     <Compile Include="Renderer.fs" />
     <Compile Include="GraphData.fs" />
     <Compile Include="JsonConverter.fs" />
-    <Compile Include="Globals.fs" />
     <Compile Include="DisplayOptions.fs" />
     <Compile Include="Defaults.fs" />
     <Compile Include="Sigma.fs" />
