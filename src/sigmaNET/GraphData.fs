@@ -4,7 +4,7 @@ open DynamicObj
 open System
 open Newtonsoft.Json
 
-
+  
 
 //{key: 'Thomas', attributes: { x: 0,  y: 10, size: 1, label: 'A'}},
 // type: "image", image: "./user.svg", color: RED
@@ -19,7 +19,7 @@ type Attributes() =
             ?Size  : #IConvertible,
             ?Label : string,
             ?Color : string,
-            ?StyleType : string
+            ?StyleType : StyleParam.EdgeType
 
         ) =    
             Attributes()
@@ -51,8 +51,8 @@ type Attributes() =
                 Size      |> DynObj.setValueOpt attributes "size"
                 Label     |> DynObj.setValueOpt attributes "label"
                 Color     |> DynObj.setValueOpt attributes "color"
-                StyleType |> DynObj.setValueOpt attributes "type"
-
+                StyleType |> DynObj.setValueOptBy attributes "type" StyleParam.EdgeType.toString
+                
                 // out ->
                 attributes
             )
@@ -70,7 +70,7 @@ type Edge() =
             ?Size  : #IConvertible,
             ?Label : string,
             ?Color : string,
-            ?StyleType : string
+            ?StyleType : StyleParam.EdgeType
             
         ) =    
             Edge()
@@ -131,8 +131,8 @@ type Node() =
             ?Y     : #IConvertible,
             ?Size  : #IConvertible,
             ?Label : string,
-            ?Color : string,
-            ?StyleType : string
+            ?Color : string
+            // ?StyleType : string
         ) =    
             Node()
             |> Node.Style
@@ -142,8 +142,8 @@ type Node() =
                     ?Y  = Y,
                     ?Size = Size,
                     ?Label = Label,
-                    ?Color = Color,
-                    ?StyleType =  StyleType
+                    ?Color = Color
+                    // ?StyleType =  StyleType
                 )
 
     // Applies updates to Data()
@@ -154,8 +154,8 @@ type Node() =
             ?Y,
             ?Size,
             ?Label,
-            ?Color,
-            ?StyleType
+            ?Color
+            // ?StyleType
 
         ) =
             (fun (node:Node) -> 
@@ -170,8 +170,8 @@ type Node() =
                             ?Y  = Y,
                             ?Size = Size,
                             ?Label = Label,
-                            ?Color = Color,
-                            ?StyleType =  StyleType
+                            ?Color = Color
+                            // ?StyleType =  StyleType
                         )
 
                 key        |> DynObj.setValue node "key"

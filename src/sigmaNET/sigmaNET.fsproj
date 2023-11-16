@@ -20,6 +20,7 @@
     <EmbeddedResource Include="sigma.min.js" />
     <Compile Include="Globals.fs" />
     <Compile Include="InternalUtils.fs" />
+    <Compile Include="StyleParams.fs" />
     <Compile Include="Layout.fs" />
     <Compile Include="Renderer.fs" />
     <Compile Include="GraphData.fs" />
@@ -30,8 +31,6 @@
     <Compile Include="Html.fs" />
     <Compile Include="GraphAPI.fs" />
   </ItemGroup>
-
-  <ItemGroup />
 
   <ItemGroup>
     <PackageReference Include="DynamicObj" Version="2.0.0" />
