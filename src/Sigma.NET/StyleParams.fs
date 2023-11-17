@@ -14,3 +14,27 @@ module StyleParam =
             | Line -> "line"
             | Arrow -> "arrow"
             | CurvedArrow -> "curvedArrow"
+
+    [<RequireQualifiedAccess>]
+    type NodeType = 
+        | Circle
+        | Triangle
+        | Square
+        | Pentagon
+        | Star
+        | Hexagon
+        | Heart
+        | Cloud
+        | Custom of string
+        static member toString =
+            function
+            | Circle -> "circle"
+            | Triangle -> "triangle"
+            | Square -> "square"
+            | Pentagon -> "pentagon"
+            | Star -> "star"
+            | Hexagon -> "hexagon"
+            | Heart -> "heart"
+            | Cloud -> "cloud"
+            | Custom str -> str            
+            

@@ -19,6 +19,31 @@ with static member serialize (v:CssLength) =
 
 module Render =
 
+    type ColorOrReference() =
+        inherit DynamicObj ()
+        static member Init 
+            ( 
+                ?Color : string,
+                ?Reference : string
+            ) =
+                ColorOrReference()
+                |> ColorOrReference.Style
+                    (
+                        ?Color = Color,
+                        ?Reference = Reference
+                    )
+        static member Style
+            ( 
+                ?Color,
+                ?Reference
+            ) =
+                (fun (colorOrReference:ColorOrReference) -> 
+                    Color |> DynObj.setValueOpt colorOrReference "color"
+                    Reference |> DynObj.setValueOpt colorOrReference "reference"
+                    // out ->
+                    colorOrReference
+                )
+
     type Settings() =
         inherit DynamicObj ()
    
@@ -31,17 +56,17 @@ module Render =
             ?EnableEdgeWheelEvents : bool,
             ?EnableEdgeHoverEvents : bool,
             ?DefaultNodeColor : string,
-            ?DefaultNodeType : string,
+            ?DefaultNodeType : StyleParam.NodeType,
             ?DefaultEdgeColor : string,
-            ?DefaultEdgeType : string,    
+            ?DefaultEdgeType : StyleParam.EdgeType,    
             ?LabelFont : string,
             ?LabelSize : int,
             ?LabelWeight : string,
-            ?LabelColor : string,
+            ?LabelColor : ColorOrReference,
             ?EdgeLabelFont : string,
             ?EdgeLabelSize : int,
             ?EdgeLabelWeight : string,
-            ?EdgeLabelColor : string,
+            ?EdgeLabelColor : ColorOrReference,
             ?StagePadding : int,
             ?LabelDensity : int,
             ?LabelGridCellSize : int,
@@ -133,9 +158,12 @@ module Render =
                     EnableEdgeWheelEvents |> DynObj.setValueOpt settings "enableEdgeWheelEvents"
                     EnableEdgeHoverEvents |> DynObj.setValueOpt settings "enableEdgeHoverEvents"
                     DefaultNodeColor |> DynObj.setValueOpt settings "defaultNodeColor"
-                    DefaultNodeType |> DynObj.setValueOpt settings "defaultNodeType"
+                    
+                    DefaultNodeType |> DynObj.setValueOptBy settings "defaultNodeType" StyleParam.NodeType.toString
+                    
                     DefaultEdgeColor |> DynObj.setValueOpt settings "defaultEdgeColor"
-                    DefaultEdgeType |> DynObj.setValueOpt settings "defaultEdgeType"
+                    DefaultEdgeType |> DynObj.setValueOptBy settings "defaultEdgeType" StyleParam.EdgeType.toString
+                    
                     LabelFont |> DynObj.setValueOpt settings "labelFont"
                     LabelSize |> DynObj.setValueOpt settings "labelSize"
                     LabelWeight |> DynObj.setValueOpt settings "labelWeight"
