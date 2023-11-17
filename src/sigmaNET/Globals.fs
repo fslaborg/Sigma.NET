@@ -26,7 +26,7 @@ module Globals =
     const graph = new graphology.Graph();
     graph.import([GRAPHDATA]);
     [LAYOUT]
-    const renderer = new Sigma(graph, container);
+    const renderer = new Sigma(graph, container,[SETTINGS]);
     """
     [<Literal>]
     let REQUIREJS_SCRIPT_TEMPLATE = """
@@ -40,7 +40,7 @@ module Globals =
             const graph = new graphology.Graph();
             graph.import([GRAPHDATA]);
             [LAYOUT]  
-            const renderer = new Sigma(graph, container);
+            const renderer = new Sigma(graph, container,[SETTINGS]);
         
         });
     """

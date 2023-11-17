@@ -92,6 +92,12 @@ type Graph() =
             
             graph
 
+    /// Sets the Renderer settings
+    [<CompiledName("WithRenderer")>]
+    static member withRenderer(settings:Render.Settings) = 
+        fun (graph:SigmaGraph) ->
+            graph.Settings <- settings
+            graph
 
     [<CompiledName("Show")>] 
     static member show() (graph:SigmaGraph) = 

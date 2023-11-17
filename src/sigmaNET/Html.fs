@@ -18,6 +18,7 @@ type HTML =
         (
             graphData: string,
             layout : string,
+            settings: string,
             containerId: string,
             sigmaJSRef: JSlibReference
         ) =
@@ -36,6 +37,7 @@ type HTML =
                             .Replace("[GRAPHOLOGY-LIB_JS]", gjs.GraphologyLib)
                             .Replace("[CONTAINERID]",containerId)
                             .Replace("[LAYOUT]",layout)
+                            .Replace("[SETTINGS]",settings)
                             .Replace("[GRAPHDATA]", graphData)
                     )
                 ]
@@ -47,6 +49,7 @@ type HTML =
                         Globals.SCRIPT_TEMPLATE
                             .Replace("[CONTAINERID]",containerId)
                             .Replace("[LAYOUT]",layout)
+                            .Replace("[SETTINGS]",settings)
                             .Replace("[GRAPHDATA]", graphData)
                     )
                 ]
@@ -103,6 +106,7 @@ type HTML =
         (
             graphData: string,
             layout : string,
+            settings: string,
             divId: string,
             sigmaJSRef: JSlibReference,
             ?Width: CssLength,
@@ -116,6 +120,7 @@ type HTML =
             HTML.CreateGraphScript(
                 graphData = graphData,
                 layout = layout,
+                settings = settings,
                 containerId = divId,
                 sigmaJSRef = sigmaJSRef
             )
@@ -151,11 +156,14 @@ type HTML =
 
             let jsonGraph = JsonConvert.SerializeObject (graph.GraphData,ntsettings)
 
-            let layout = Layout.serialize graph.Layout                
+            let layout = Layout.serialize graph.Layout  
+            
+            let settings = JsonConvert.SerializeObject (graph.Settings,ntsettings)
 
             HTML.CreateGraphHTML(
                 graphData = jsonGraph,
                 layout = layout,
+                settings = settings,
                 divId = id,
                 sigmaJSRef = sigmaReference,
                 // Maybe we should use the DisplayOptions width and height here?
