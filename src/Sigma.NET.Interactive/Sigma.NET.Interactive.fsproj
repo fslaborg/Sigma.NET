@@ -9,10 +9,10 @@
     <Description>A .NET Interactive Kernel Extension for displaying Sigma.NET graphs.</Description>
     <Summary>A .NET Interactive Kernel Extension for displaying Sigma.NET graphs.</Summary>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://fslab.org/Cytoscape.NET/</PackageProjectUrl>
+    <PackageProjectUrl>https://fslab.org/Sigma.NET/</PackageProjectUrl>
     <!--<PackageIcon>icon.png</PackageIcon>-->
     <PackageTags>sigma graph visualisation fsharp csharp dotnet</PackageTags>
-    <RepositoryUrl>https://github.com/fslaborg/Cytoscape.NET</RepositoryUrl>
+    <RepositoryUrl>https://github.com/fslaborg/Sigma.NET</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <FsDocsLicenseLink>https://github.com/fslaborg/Sigma.NET/blob/master/LICENSE</FsDocsLicenseLink>
     <FsDocsReleaseNotesLink>https://github.com/fslaborg/Sigma.NET/blob/master/RELEASE_NOTES.md</FsDocsReleaseNotesLink>
