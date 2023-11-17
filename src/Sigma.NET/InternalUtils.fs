@@ -1,4 +1,4 @@
-﻿namespace sigmaNET
+﻿namespace Sigma.NET
 
 open System
 
@@ -23,9 +23,9 @@ module InternalUtils =
     let getSourceCodeJS () =
 
         {
-            Sigma = readFromManifestResource "sigmaNET.sigma.min.js";
-            Graphology = readFromManifestResource "sigmaNET.graphology.umd.min.js";
-            GraphologyLib = readFromManifestResource "sigmaNET.graphology-library.min.js"
+            Sigma = readFromManifestResource "Sigma.NET.sigma.min.js";
+            Graphology = readFromManifestResource "Sigma.NET.graphology.umd.min.js";
+            GraphologyLib = readFromManifestResource "Sigma.NET.graphology-library.min.js"
         }
 
     let getUriJS () =
@@ -39,9 +39,9 @@ module InternalUtils =
         //Assembly.GetExecutingAssembly().GetName().Version.ToString()
         let home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile).Replace("\\", "/")
         {
-            Sigma = $"{home}/.nuget/packages/sigmanet/{Globals.NUGET_VERSION}/content/sigma.min.js"
-            Graphology = $"{home}/.nuget/packages/sigmanet/{Globals.NUGET_VERSION}/content/graphology.umd.min.js"
-            GraphologyLib = $"{home}/.nuget/packages/sigmanet/{Globals.NUGET_VERSION}/content/graphology-library.min.js" ;
+            Sigma = $"{home}/.nuget/packages/Sigma.NET/{Globals.NUGET_VERSION}/content/sigma.min.js"
+            Graphology = $"{home}/.nuget/packages/Sigma.NET/{Globals.NUGET_VERSION}/content/graphology.umd.min.js"
+            GraphologyLib = $"{home}/.nuget/packages/Sigma.NET/{Globals.NUGET_VERSION}/content/graphology-library.min.js" ;
         }
 
         

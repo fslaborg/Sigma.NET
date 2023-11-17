@@ -1,12 +1,12 @@
-﻿namespace sigmaNET.Interactive
+﻿namespace Sigma.NET.Interactive
 
-open sigmaNET
+open Sigma.NET
 
 module Formatters = 
     
     /// Converts a Cytoscape type to it's HTML representation to show in a notebook environment.
     let toInteractiveHTML (graph:SigmaGraph): string = 
-        let sigma = sigmaNET.InternalUtils.getUriJS()
+        let sigma = Sigma.NET.InternalUtils.getUriJS()
 
         graph
         |> HTML.toGraphHTML(

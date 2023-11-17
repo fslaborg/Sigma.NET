@@ -1,4 +1,4 @@
-﻿namespace sigmaNET
+﻿namespace Sigma.NET
 
 open DynamicObj
 open System.Runtime.InteropServices
@@ -78,12 +78,12 @@ type DisplayOptions() =
             SigmaJSRef = CDN (InternalUtils.getUriJS ()),
             AdditionalHeadTags =
                 [
-                    title [] [ str "sigmaNET Datavisualization" ]
+                    title [] [ str "Sigma.NET Datavisualization" ]
                     meta [ _charset "UTF-8" ]
                     meta
                         [
                             _name "description"
-                            _content "A sigma.js graph generated with sigmaNET"
+                            _content "A sigma.js graph generated with Sigma.NET"
                         ]
                     link
                         [

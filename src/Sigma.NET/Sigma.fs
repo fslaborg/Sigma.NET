@@ -1,4 +1,4 @@
-﻿namespace sigmaNET
+﻿namespace Sigma.NET
 
 
 open DynamicObj

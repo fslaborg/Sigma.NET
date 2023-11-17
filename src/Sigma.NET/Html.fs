@@ -1,4 +1,4 @@
-namespace sigmaNET
+namespace Sigma.NET
 
 open System
 open System.IO
@@ -133,7 +133,7 @@ type HTML =
                         [ _id divId; _style (sprintf "width: %s; height: %s" (CssLength.serialize width) (CssLength.serialize height) )]
                         [
                             rawText "&nbsp"
-                            comment "SigmaNET graph will be drawn inside this DIV"
+                            comment "Sigma.NET graph will be drawn inside this DIV"
                         ]
                     graphScript
                 ]

@@ -1,4 +1,4 @@
-﻿namespace sigmaNET
+﻿namespace Sigma.NET
 
 // https://www.sigmajs.org/docs/interfaces/settings.Settings.html
 

@@ -6,16 +6,16 @@
   </PropertyGroup>
   <PropertyGroup>
     <Authors>Timo Mühlhaus, fslab contributors</Authors>
-    <Description>A .NET Interactive Kernel Extension for displaying sigmaNET graphs.</Description>
-    <Summary>A .NET Interactive Kernel Extension for displaying sigmaNET graphs.</Summary>
+    <Description>A .NET Interactive Kernel Extension for displaying Sigma.NET graphs.</Description>
+    <Summary>A .NET Interactive Kernel Extension for displaying Sigma.NET graphs.</Summary>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://fslab.org/Cytoscape.NET/</PackageProjectUrl>
     <!--<PackageIcon>icon.png</PackageIcon>-->
     <PackageTags>sigma graph visualisation fsharp csharp dotnet</PackageTags>
     <RepositoryUrl>https://github.com/fslaborg/Cytoscape.NET</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <FsDocsLicenseLink>https://github.com/fslaborg/sigmaNET/blob/master/LICENSE</FsDocsLicenseLink>
-    <FsDocsReleaseNotesLink>https://github.com/fslaborg/sigmaNET/blob/master/RELEASE_NOTES.md</FsDocsReleaseNotesLink>
+    <FsDocsLicenseLink>https://github.com/fslaborg/Sigma.NET/blob/master/LICENSE</FsDocsLicenseLink>
+    <FsDocsReleaseNotesLink>https://github.com/fslaborg/Sigma.NET/blob/master/RELEASE_NOTES.md</FsDocsReleaseNotesLink>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
@@ -27,7 +27,7 @@
 
   <ItemGroup>
     <None Include="..\..\docs\img\logo.png" Pack="true" PackagePath="\" />
-    <None Include="$(OutputPath)/sigmaNET.Interactive.dll" Pack="true" PackagePath="interactive-extensions/dotnet" />
+    <None Include="$(OutputPath)/Sigma.NET.Interactive.dll" Pack="true" PackagePath="interactive-extensions/dotnet" />
   </ItemGroup>  
   
   <ItemGroup>
@@ -40,7 +40,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\sigmaNET\sigmaNET.fsproj" />
+    <ProjectReference Include="..\Sigma.NET\Sigma.NET.fsproj" />
   </ItemGroup>
 
   <Target Name="UseExplicitPackageVersions" BeforeTargets="GenerateNuspec">

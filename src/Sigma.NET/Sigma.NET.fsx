@@ -1,10 +1,10 @@
 #r "nuget: DynamicObj"
 #r "nuget: Newtonsoft.Json, 12.0.3"
 #r "nuget: Giraffe.ViewEngine, 1.4.0"
-#r "./bin/Debug/net6.0/sigmaNET.dll"
+#r "./bin/Debug/net6.0/Sigma.NET.dll"
 
 #r "nuget: Graphoscope, 0.4.0"
-open sigmaNET
+open Sigma.NET
 
 open System
 open System.IO

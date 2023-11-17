@@ -1,4 +1,4 @@
-﻿namespace sigmaNET
+﻿namespace Sigma.NET
 
 open System.Runtime.InteropServices
 // https://www.bsimard.com/2018/04/25/graph-viz-with-sigmajs.html

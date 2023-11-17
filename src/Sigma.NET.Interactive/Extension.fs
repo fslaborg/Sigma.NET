@@ -1,10 +1,10 @@
-namespace sigmaNET.Interactive
+namespace Sigma.NET.Interactive
 
 open System
 open System.Threading.Tasks
 open Microsoft.DotNet.Interactive
 open Microsoft.DotNet.Interactive.Formatting
-open sigmaNET
+open Sigma.NET
 
 type FormatterKernelExtension() =
 

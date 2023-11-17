@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "sigmaNET", "src\sigmaNET\sigmaNET.fsproj", "{4E2136EA-9B56-4B2B-AA59-F181F56EEBED}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{6CE2AB90-370D-437D-B98D-A3618DBA64F6}"
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "build", "build\build.fsproj", "{56AC32A3-7D50-4128-A900-F24D9F83944F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{D7CE65E7-AB34-4236-BEA9-1CFB7B2BB54B}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "sigmaNET.Interactive", "src\sigmaNET.Interactive\sigmaNET.Interactive.fsproj", "{C7F37712-2213-4070-A26F-2EC4F380AF66}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{865FECD4-7975-4440-BBC0-B5E1C788BED0}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Sigma.NET.Interactive", "src\Sigma.NET.Interactive\Sigma.NET.Interactive.fsproj", "{80BAC37E-6F47-4BD0-849A-D40F2A42EC41}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Sigma.NET", "src\Sigma.NET\Sigma.NET.fsproj", "{E03988A2-D228-4F6A-A699-8E726762ACFA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,24 +21,26 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4E2136EA-9B56-4B2B-AA59-F181F56EEBED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4E2136EA-9B56-4B2B-AA59-F181F56EEBED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4E2136EA-9B56-4B2B-AA59-F181F56EEBED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4E2136EA-9B56-4B2B-AA59-F181F56EEBED}.Release|Any CPU.Build.0 = Release|Any CPU
 		{56AC32A3-7D50-4128-A900-F24D9F83944F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{56AC32A3-7D50-4128-A900-F24D9F83944F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56AC32A3-7D50-4128-A900-F24D9F83944F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56AC32A3-7D50-4128-A900-F24D9F83944F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C7F37712-2213-4070-A26F-2EC4F380AF66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C7F37712-2213-4070-A26F-2EC4F380AF66}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C7F37712-2213-4070-A26F-2EC4F380AF66}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C7F37712-2213-4070-A26F-2EC4F380AF66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80BAC37E-6F47-4BD0-849A-D40F2A42EC41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80BAC37E-6F47-4BD0-849A-D40F2A42EC41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80BAC37E-6F47-4BD0-849A-D40F2A42EC41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80BAC37E-6F47-4BD0-849A-D40F2A42EC41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E03988A2-D228-4F6A-A699-8E726762ACFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E03988A2-D228-4F6A-A699-8E726762ACFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E03988A2-D228-4F6A-A699-8E726762ACFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E03988A2-D228-4F6A-A699-8E726762ACFA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{56AC32A3-7D50-4128-A900-F24D9F83944F} = {6CE2AB90-370D-437D-B98D-A3618DBA64F6}
+		{80BAC37E-6F47-4BD0-849A-D40F2A42EC41} = {865FECD4-7975-4440-BBC0-B5E1C788BED0}
+		{E03988A2-D228-4F6A-A699-8E726762ACFA} = {865FECD4-7975-4440-BBC0-B5E1C788BED0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D3B9C7C9-C3E5-4B27-8ED7-09C4EF2C594C}
