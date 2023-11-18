@@ -148,6 +148,14 @@ type VisGraph() =
             graph.Settings <- settings
             graph
 
+    [<CompiledName("WithRenderer")>]
+    static member withHoverSelector(?enable:bool) = 
+        fun (graph:SigmaGraph) ->
+            let enable = Option.defaultValue true enable
+            if enable then
+                graph.Widgets.Add("""const state={};function setHoveredNode(e){e?(state.hoveredNode=e,state.hoveredNeighbors=new Set(graph.neighbors(e))):(state.hoveredNode=void 0,state.hoveredNeighbors=void 0),renderer.refresh()}renderer.on("enterNode",({node:e})=>{setHoveredNode(e)}),renderer.on("leaveNode",()=>{setHoveredNode(void 0)}),renderer.setSetting("nodeReducer",(e,t)=>{let o=t;return state.hoveredNeighbors&&!state.hoveredNeighbors.has(e)&&state.hoveredNode!==e&&(o.label="",o.color="#f6f6f6"),o}),renderer.setSetting("edgeReducer",(e,t)=>{let o=t;return state.hoveredNode&&!graph.hasExtremity(e,state.hoveredNode)&&(o.hidden=!0),o});""")            
+            graph
+
     [<CompiledName("Show")>] 
     static member show() (graph:SigmaGraph) = 
         HTML.show(graph)

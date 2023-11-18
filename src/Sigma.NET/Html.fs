@@ -20,6 +20,7 @@ type HTML =
             layout : string,
             settings: string,
             containerId: string,
+            widgets: string,
             sigmaJSRef: JSlibReference
         ) =
         match sigmaJSRef with
@@ -38,6 +39,7 @@ type HTML =
                             .Replace("[CONTAINERID]",containerId)
                             .Replace("[LAYOUT]",layout)
                             .Replace("[SETTINGS]",settings)
+                            .Replace("[WIDGETS]",widgets)
                             .Replace("[GRAPHDATA]", graphData)
                     )
                 ]
@@ -50,6 +52,7 @@ type HTML =
                             .Replace("[CONTAINERID]",containerId)
                             .Replace("[LAYOUT]",layout)
                             .Replace("[SETTINGS]",settings)
+                            .Replace("[WIDGETS]",widgets)
                             .Replace("[GRAPHDATA]", graphData)
                     )
                 ]
@@ -108,6 +111,7 @@ type HTML =
             layout : string,
             settings: string,
             divId: string,
+            widgets: string,
             sigmaJSRef: JSlibReference,
             ?Width: CssLength,
             ?Height: CssLength
@@ -122,6 +126,7 @@ type HTML =
                 layout = layout,
                 settings = settings,
                 containerId = divId,
+                widgets = widgets,
                 sigmaJSRef = sigmaJSRef
             )
 
@@ -165,6 +170,7 @@ type HTML =
                 layout = layout,
                 settings = settings,
                 divId = id,
+                widgets = graph.GetWidgetsAsString(),
                 sigmaJSRef = sigmaReference,
                 // Maybe we should use the DisplayOptions width and height here?
                 Width = graph.Width,

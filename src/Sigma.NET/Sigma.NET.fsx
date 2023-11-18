@@ -40,6 +40,7 @@ VisGraph.empty()
 // |> VisGraph.withNoverlap(50)
 |> VisGraph.withCircularLayout()
 |> VisGraph.withRenderer(Render.Settings.Init(LabelColor=Render.ColorOrReference.Init(Color="#FA7070"))) // , DefaultEdgeType=StyleParam.EdgeType.Curve))
+|> VisGraph.withHoverSelector()
 |> VisGraph.show()
 
 

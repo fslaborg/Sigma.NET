@@ -27,6 +27,7 @@ module Globals =
     graph.import([GRAPHDATA]);
     [LAYOUT]
     const renderer = new Sigma(graph, container,[SETTINGS]);
+    [WIDGETS]
     """
     [<Literal>]
     let REQUIREJS_SCRIPT_TEMPLATE = """
@@ -41,7 +42,7 @@ module Globals =
             graph.import([GRAPHDATA]);
             [LAYOUT]  
             const renderer = new Sigma(graph, container,[SETTINGS]);
-        
+            [WIDGETS]        
         });
     """
 
