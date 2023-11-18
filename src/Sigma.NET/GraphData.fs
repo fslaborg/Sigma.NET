@@ -9,52 +9,71 @@ open Newtonsoft.Json
 //{key: 'Thomas', attributes: { x: 0,  y: 10, size: 1, label: 'A'}},
 // type: "image", image: "./user.svg", color: RED
 
-type Attributes() =
+// DisplayData = (for notes and edges) 
+  //label: string | null;
+  //size: number;
+  //color: string;
+  //hidden: boolean;
+  //forceLabel: boolean;
+  //zIndex: number;
+  //type: string;
+
+type DisplayData() =
     inherit DynamicObj ()
    
     static member Init 
-        (
-            ?X     : #IConvertible,
-            ?Y     : #IConvertible,
-            ?Size  : #IConvertible,
-            ?Label : string,
-            ?Color : string,
-            ?StyleType : StyleParam.EdgeType
+        (           
+            ?Label      : string,
+            ?Size       : #IConvertible,
+            ?Color      : string,
+            ?Hidden     : bool,
+            ?ForceLabel : bool,
+            ?ZIndex     : int,
+            ?StyleType  : string,
+            ?X          : #IConvertible,
+            ?Y          : #IConvertible
 
         ) =    
-            Attributes()
-            |> Attributes.Style
+            DisplayData()
+            |> DisplayData.Style
                 (
-                    ?X = X,
-                    ?Y = Y,
-                    ?Size = Size,
                     ?Label = Label,
+                    ?Size = Size,                    
                     ?Color = Color,
-                    ?StyleType =  StyleType
+                    ?Hidden     = Hidden,
+                    ?ForceLabel = ForceLabel,
+                    ?ZIndex     = ZIndex,
+                    ?StyleType =  StyleType,
+                    ?X = X,
+                    ?Y = Y
                 )
 
     // Applies updates to Attributes()
     static member Style
         (    
-            ?X,
-            ?Y,
-            ?Size,
             ?Label,
+            ?Size,
             ?Color,
-            ?StyleType
-
+            ?Hidden,
+            ?ForceLabel,
+            ?ZIndex,
+            ?StyleType,
+            ?X,
+            ?Y
         ) =
-            (fun (attributes:Attributes) -> 
+            (fun (displayData:DisplayData) -> 
 
-                X         |> DynObj.setValueOpt attributes "x"
-                Y         |> DynObj.setValueOpt attributes "y"
-                Size      |> DynObj.setValueOpt attributes "size"
-                Label     |> DynObj.setValueOpt attributes "label"
-                Color     |> DynObj.setValueOpt attributes "color"
-                StyleType |> DynObj.setValueOptBy attributes "type" StyleParam.EdgeType.toString
-                
+                Label      |> DynObj.setValueOpt displayData "label"
+                Size       |> DynObj.setValueOpt displayData "size"                
+                Color      |> DynObj.setValueOpt displayData "color"
+                Hidden     |> DynObj.setValueOpt displayData "hidden"
+                ForceLabel |> DynObj.setValueOpt displayData "forceLabel"
+                ZIndex     |> DynObj.setValueOpt displayData "zIndex"
+                StyleType  |> DynObj.setValueOpt displayData "type" 
+                X          |> DynObj.setValueOpt displayData "x"
+                Y          |> DynObj.setValueOpt displayData "y"                
                 // out ->
-                attributes
+                displayData
             )
 
 
@@ -67,10 +86,7 @@ type Edge() =
             source : string,
             target : string,
             ?Key   : string,
-            ?Size  : #IConvertible,
-            ?Label : string,
-            ?Color : string,
-            ?StyleType : StyleParam.EdgeType
+            ?DisplayData : DisplayData
             
         ) =    
             Edge()
@@ -79,10 +95,7 @@ type Edge() =
                     source = source,
                     target = target,
                     ?Key = Key,
-                    ?Size = Size,
-                    ?Label = Label,
-                    ?Color = Color,
-                    ?StyleType =  StyleType
+                    ?DisplayData = DisplayData
                 )
 
     // Applies updates to Edge() 
@@ -91,35 +104,19 @@ type Edge() =
             source,
             target,
             ?Key,
-            ?Size,
-            ?Label,
-            ?Color,
-            ?StyleType
+            ?DisplayData
 
         ) =
             (fun (edge:Edge) -> 
-
-                let attributes = 
-                    match edge.TryGetTypedValue<Attributes>("attributes") with
-                    | None -> Attributes()
-                    | Some a -> a
-                    |> Attributes.Style
-                        (
-                            ?Size = Size,
-                            ?Label = Label,
-                            ?Color = Color,
-                            ?StyleType =  StyleType
-                        )
                 
-                source     |> DynObj.setValue    edge "source"
-                target     |> DynObj.setValue    edge "target"
-                Key        |> DynObj.setValueOpt edge "key"
-                attributes |> DynObj.setValue    edge "attributes"
+                source      |> DynObj.setValue    edge "source"
+                target      |> DynObj.setValue    edge "target"
+                Key         |> DynObj.setValueOpt edge "key"
+                DisplayData |> DynObj.setValueOpt    edge "attributes"
                 
                 // out ->
                 edge
             )
-
 
 type Node() =
     inherit DynamicObj ()
@@ -127,55 +124,27 @@ type Node() =
     static member Init 
         (
             key    : string,
-            ?X     : #IConvertible,
-            ?Y     : #IConvertible,
-            ?Size  : #IConvertible,
-            ?Label : string,
-            ?Color : string
-            // ?StyleType : string
+            ?DisplayData : DisplayData
         ) =    
             Node()
             |> Node.Style
                 (
                     key = key,
-                    ?X  = X,
-                    ?Y  = Y,
-                    ?Size = Size,
-                    ?Label = Label,
-                    ?Color = Color
-                    // ?StyleType =  StyleType
+                    ?DisplayData = DisplayData
+
                 )
 
     // Applies updates to Data()
     static member Style
         (    
             key,
-            ?X,
-            ?Y,
-            ?Size,
-            ?Label,
-            ?Color
-            // ?StyleType
+            ?DisplayData
 
         ) =
             (fun (node:Node) -> 
 
-                let attributes = 
-                    match node.TryGetTypedValue<Attributes>("attributes") with
-                    | None -> Attributes()
-                    | Some a -> a
-                    |> Attributes.Style
-                        (
-                            ?X  = X,
-                            ?Y  = Y,
-                            ?Size = Size,
-                            ?Label = Label,
-                            ?Color = Color
-                            // ?StyleType =  StyleType
-                        )
-
-                key        |> DynObj.setValue node "key"
-                attributes |> DynObj.setValue node "attributes"
+                key         |> DynObj.setValue node "key"
+                DisplayData |> DynObj.setValueOpt node "attributes"
                 // out ->
                 node
             )

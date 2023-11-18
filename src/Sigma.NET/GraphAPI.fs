@@ -1,13 +1,36 @@
 ﻿namespace Sigma.NET
 
 open System.Runtime.InteropServices
+open System
+
 // https://www.bsimard.com/2018/04/25/graph-viz-with-sigmajs.html
 
 
 [<AutoOpen>]
-module Graph = 
-    let node key = Node.Init(key = key) 
-    let edge source target = Edge.Init(source = source,target = target) 
+type VisGraphElement() = 
+    static member node key = Node.Init(key = key) 
+
+    //static member withDisplayNodeData(
+    //        ?Label      : string,
+    //        ?Size       : #IConvertible,
+    //        ?Color      : string,
+    //        ?Hidden     : bool,
+    //        ?ForceLabel : bool,
+    //        ?ZIndex     : int,
+    //        ?StyleType  : string,
+    //        ?X          : #IConvertible,
+    //        ?Y          : #IConvertible
+    //) =
+    //    fun (node:Node) -> 
+    //        Node.Style()
+    //        node <- DisplayData.Init(?Label=Label,?Size=Size,?Color=Color,?Hidden=Hidden,?ForceLabel=ForceLabel,?ZIndex=ZIndex,?StyleType=StyleType,?X=X,?Y=Y)
+    //        node
+    
+    ////(data:Attributes) (node:Node) = 
+    //    node.Data <- data
+    //    node    
+
+    static member edge source target = Edge.Init(source = source,target = target) 
     
 
 

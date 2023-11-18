@@ -1,6 +1,6 @@
 #r "nuget: DynamicObj"
-#r "nuget: Newtonsoft.Json, 12.0.3"
-#r "nuget: Giraffe.ViewEngine, 1.4.0"
+#r "nuget: Newtonsoft.Json"
+#r "nuget: Giraffe.ViewEngine"
 #r "./bin/Debug/net6.0/Sigma.NET.dll"
 
 #r "nuget: Graphoscope, 0.4.0"
@@ -25,7 +25,7 @@ let myBollobasRiordan = RandomModels.BollobasRiordan.initDirectedFGraph  N 0.5 0
 Graph.empty()
 |> Graph.withNodes[
     for node in myBollobasRiordan do
-        yield (Node.Init(key=string node.Key, Size=rnd.Next(1, 18), Color=colors.[rnd.Next(0, 4)]))
+        yield (Node.Init(key=string node.Key, Size=rnd.Next(1, 18), Color=colors.[rnd.Next(0, 4)], Label=string node.Key))
 
 ]
 |> Graph.withEdges [
@@ -39,6 +39,7 @@ Graph.empty()
 // |> Graph.withForceAtlas2(Iterations=100,Settings=FA2Settings.Init(AdjustSizes=true,Gravity=5),GetEdgeWeight="size")
 // |> Graph.withNoverlap(50)
 |> Graph.withCircularLayout()
+|> Graph.withRenderer(Render.Settings.Init(LabelColor=Render.ColorOrReference.Init(Color="#A6CF98"), DefaultEdgeType=StyleParam.EdgeType.Curve))
 |> Graph.show()
 
 
