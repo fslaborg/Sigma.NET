@@ -2,6 +2,7 @@
 
 open System.Runtime.InteropServices
 open System
+open DynamicObj
 
 // https://www.bsimard.com/2018/04/25/graph-viz-with-sigmajs.html
 
@@ -10,28 +11,53 @@ open System
 type VisGraphElement() = 
     static member node key = Node.Init(key = key) 
 
-    //static member withDisplayNodeData(
-    //        ?Label      : string,
-    //        ?Size       : #IConvertible,
-    //        ?Color      : string,
-    //        ?Hidden     : bool,
-    //        ?ForceLabel : bool,
-    //        ?ZIndex     : int,
-    //        ?StyleType  : string,
-    //        ?X          : #IConvertible,
-    //        ?Y          : #IConvertible
-    //) =
-    //    fun (node:Node) -> 
-    //        Node.Style()
-    //        node <- DisplayData.Init(?Label=Label,?Size=Size,?Color=Color,?Hidden=Hidden,?ForceLabel=ForceLabel,?ZIndex=ZIndex,?StyleType=StyleType,?X=X,?Y=Y)
-    //        node
+    static member withNodeData(
+            ?Label      : string,
+            ?Size       : #IConvertible,
+            ?Color      : string,
+            ?Hidden     : bool,
+            ?ForceLabel : bool,
+            ?ZIndex     : int,
+            ?StyleType  : StyleParam.NodeType,
+            ?X          : #IConvertible,
+            ?Y          : #IConvertible
+    ) =
+        fun (node:Node) -> 
+            let styleType = Option.map StyleParam.NodeType.toString StyleType
+            let displayData = 
+                    match node.TryGetTypedValue<DisplayData>("attributes") with
+                    | None -> DisplayData()
+                    | Some a -> a
+                    |> DisplayData.Style
+                        (?Label=Label,?Size=Size,?Color=Color,?Hidden=Hidden,
+                         ?ForceLabel=ForceLabel,?ZIndex=ZIndex,?StyleType=styleType,?X=X,?Y=Y)
+            displayData |> DynObj.setValue node "attributes"
+            node
     
-    ////(data:Attributes) (node:Node) = 
-    //    node.Data <- data
-    //    node    
-
     static member edge source target = Edge.Init(source = source,target = target) 
     
+    static member withEdgeData(
+            ?Label      : string,
+            ?Size       : #IConvertible,
+            ?Color      : string,
+            ?Hidden     : bool,
+            ?ForceLabel : bool,
+            ?ZIndex     : int,
+            ?StyleType  : StyleParam.EdgeType,
+            ?X          : #IConvertible,
+            ?Y          : #IConvertible
+    ) =
+        fun (edge:Edge) -> 
+            let styleType = Option.map StyleParam.EdgeType.toString StyleType
+            let displayData = 
+                    match edge.TryGetTypedValue<DisplayData>("attributes") with
+                    | None -> DisplayData()
+                    | Some a -> a
+                    |> DisplayData.Style
+                        (?Label=Label,?Size=Size,?Color=Color,?Hidden=Hidden,
+                         ?ForceLabel=ForceLabel,?ZIndex=ZIndex,?StyleType=styleType,?X=X,?Y=Y)
+            displayData |> DynObj.setValue edge "attributes"
+            edge
 
 
 // Module to manipulate and sytely a graph
