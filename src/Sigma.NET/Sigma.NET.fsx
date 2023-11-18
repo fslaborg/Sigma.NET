@@ -22,25 +22,25 @@ let random_number = rnd.Next(1, 51)
 //let myGilbertGraph = Gilbert.initDirectedFGraph N p
 let myBollobasRiordan = RandomModels.BollobasRiordan.initDirectedFGraph  N 0.5 0.1 0.4 0.6 0.4 FGraph.empty
 
-Graph.empty()
-|> Graph.withNodes[
+VisGraph.empty()
+|> VisGraph.withNodes[
     for node in myBollobasRiordan do
-        yield (Node.Init(key=string node.Key, Size=rnd.Next(1, 18), Color=colors.[rnd.Next(0, 4)], Label=string node.Key))
+        yield (Node.Init(key=string node.Key,DisplayData=DisplayData.Init(Size=rnd.Next(1, 18), Color=colors.[rnd.Next(0, 4)], Label=string node.Key)))
 
 ]
-|> Graph.withEdges [
+|> VisGraph.withEdges [
     for node in myBollobasRiordan do
         let pred,t,_ = node.Value
         for kv in pred do
-            yield (Edge.Init(source=string kv.Key, target=string t,Size=rnd.Next(1, 3)) )
+            yield (Edge.Init(source=string kv.Key, target=string t,DisplayData=DisplayData.Init(Size=rnd.Next(1, 3))) )
 
 ]
 
-// |> Graph.withForceAtlas2(Iterations=100,Settings=FA2Settings.Init(AdjustSizes=true,Gravity=5),GetEdgeWeight="size")
-// |> Graph.withNoverlap(50)
-|> Graph.withCircularLayout()
-|> Graph.withRenderer(Render.Settings.Init(LabelColor=Render.ColorOrReference.Init(Color="#A6CF98"), DefaultEdgeType=StyleParam.EdgeType.Curve))
-|> Graph.show()
+// |> VisGraph.withForceAtlas2(Iterations=100,Settings=FA2Settings.Init(AdjustSizes=true,Gravity=5),GetEdgeWeight="size")
+// |> VisGraph.withNoverlap(50)
+|> VisGraph.withCircularLayout()
+|> VisGraph.withRenderer(Render.Settings.Init(LabelColor=Render.ColorOrReference.Init(Color="#FA7070"))) // , DefaultEdgeType=StyleParam.EdgeType.Curve))
+|> VisGraph.show()
 
 
 // let jsonTxt = File.ReadAllText("D:/Source/sigmaNET/src/sigmaNET/data.json")
