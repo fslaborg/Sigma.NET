@@ -61,7 +61,7 @@ type VisGraphElement() =
 
 
 // Module to manipulate and sytely a graph
-type Graph() =
+type VisGraph() =
     
     [<CompiledName("Empty")>]
     static member empty () = SigmaGraph()
